@@ -1,8 +1,9 @@
 from flask_restx import Namespace, Resource, fields
 from flask import jsonify
-from .config import ClickhouseConfig
 from clickhouse_driver import Client
 import pandas as pd
+
+from .config import ClickhouseConfig
 
 api = Namespace('ues', description='User equipment related operations')
 
