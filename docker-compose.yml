@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  aodt_clickhouse_api:
+    build:
+      context: ./
+      dockerfile: ./aodt_clickhouse_api.Dockerfile
+    container_name: aodt_clickhouse_api
+    restart: unless-stopped
+    # Lets container see host network, may be dangerous but allows connection to clickhouse-server
+    network_mode: "host"
+    environment:
+      FLASK_ENV: development
+      TZ: Asia/Taipei

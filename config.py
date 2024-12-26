@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_restx import Resource, Api
 from flasgger import Swagger
 import json
-import clickhouse_connect
+from clickhouse_driver import Client
 
 # Flask app
 app = Flask(__name__)
@@ -27,11 +27,11 @@ app.config['SWAGGER'] = {
 swag = Swagger(app, template_file = 'openapi.yml')
 
 # API
-@api.route('/ue/<string:database>')
+@api.route('/throughput/<string:database>')
 class UE(Resource):
     def get(self, database):
         # Clickhouse client with specified database
-        client = clickhouse_connect.get_client(host=Config.clickhouse_host, database=database)
-        result = client.query("SELECT * FROM ues FORMAT JSONEachRow")
-        print(result.result_rows)
-        return jsonify(result.result_rows)
+        client = Client(host=Config.clickhouse_host, database=database)
+        result = client.execute("SELECT * FROM ues FORMAT JSON")
+        print(result)
+        return jsonify(result)
