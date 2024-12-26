@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_restx import Resource, Api
 from flasgger import Swagger
 import json
+import pandas as pd
 from clickhouse_driver import Client
 
 # Flask app
@@ -32,6 +33,14 @@ class UE(Resource):
     def get(self, database):
         # Clickhouse client with specified database
         client = Client(host=Config.clickhouse_host, database=database)
-        result = client.execute("SELECT * FROM ues FORMAT JSON")
-        print(result)
-        return jsonify(result)
+
+        # clickhouse-driver ignores FORMAT clause
+        data = client.execute_iter("SELECT * FROM ues", with_column_types=True)
+        columns = [column[0] for column in next(data)]
+
+        # Pandas process column key and value pairs
+        df = pd.DataFrame.from_records(data, columns=columns)
+        json_result = df.to_json(orient='records')
+
+        # print(json_result)
+        return jsonify(json_result)

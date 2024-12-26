@@ -12,4 +12,4 @@ ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 2980
 # CMD ["flask", "run", "--host=0.0.0.0", "--port=2980"]
 # CMD ["python", "app.py"]
-CMD ["gunicorn", "-w", "12", "-b", "0.0.0.0:2980", "config:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:2980", "config:app", "--log-level", "debug"]
