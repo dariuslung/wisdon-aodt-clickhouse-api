@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11
 WORKDIR /app
 ADD . /app
 COPY flask_requirement.txt .
@@ -12,4 +12,4 @@ ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 2980
 # CMD ["flask", "run", "--host=0.0.0.0", "--port=2980"]
 # CMD ["python", "app.py"]
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:2980", "config:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:2980", "app:app"]
