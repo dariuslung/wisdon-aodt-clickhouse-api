@@ -8,10 +8,10 @@ from .config import ClickhouseConfig
 api = Namespace('ues', description='User equipment related operations')
 
 # API
-@api.route('/throughput/<string:database>')
+@api.route('/<string:database>')
 @api.param('database', 'The database identifier')
-class UE_Throughput(Resource):
-    @api.doc('get_ue_throughput')
+class UE_Data(Resource):
+    @api.doc('get_ue_data')
     def get(self, database):
         # Clickhouse client with specified database
         client = Client(host=ClickhouseConfig.host, database=database)
